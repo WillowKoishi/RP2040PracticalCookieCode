@@ -1,8 +1,8 @@
 from machine import Pin
 import time,utime,random
 from neopixel import NeoPixel
-pin = Pin(16, Pin.OUT)
-np = NeoPixel(pin,64)
+pin = Pin(7, Pin.OUT)
+np = NeoPixel(pin,60)
 
 R = 0
 G = 0
@@ -86,10 +86,10 @@ while 0:
     #time.sleep(0.02)
     np.write()
 while 0:
-    for i in range(64):
+    for i in range(60):
         HSV2RGB(random.randint(0,360),s,random.randint(0,50)/100)
         np[i] = (int((R+m)*255), int((G+m)*255), int((B+m)*255))
-        time.sleep(0.00)
+        time.sleep(0.1)
     np.write()
 while 0:
     col2or = color-2
@@ -98,16 +98,39 @@ while 0:
     if color<=0:
         color=359
     HSV2RGB(color,s,v)
-    for i in range(32):
+    for i in range(30):
         HSV2RGB(color+i*3,1,1)
         #np[i] = (int((R+m)*255), int((G+m)*255), int((B+m)*255))
         np[i] = (100, 0,60)
-    for i in range(32):
-        np[i+32] = (0, 60,150)
+    for i in range(30):
+        np[i+30] = (0, 60,150)
     np.write()
-while 1:
-    for i in range(64):
+while 0:
+    for i in range(60):
         HSV2RGB(0,0,1)
         np[i] = (int((R+m)*255), int((G+m)*255), int((B+m)*255))
         time.sleep(0.00)
+    np.write()
+
+
+from machine import Timer
+timee = 0
+i = 0
+def mPrint():
+    global timee
+    print(timee)
+    timee = 0
+    
+tim = Timer(period=1000,mode=Timer.PERIODIC,callback =lambda t:mPrint())
+
+while 1:
+    timee=timee+1
+    color = color-10
+    if color>=360:
+        color=0
+    if color<=0:
+        color=359
+    for i in range(60):
+        HSV2RGB(color+i*6,1,0.01)
+        np[i] = (int((R+m)*255), int((G+m)*255), int((B+m)*255))
     np.write()
